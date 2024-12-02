@@ -1,0 +1,8 @@
+google-api-core==2.23.0
+google-api-python-client==2.154.0
+google-auth==2.36.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.1
+googleapis-common-protos==1.66.0
+youtube-dl==2021.12.17
+youtube-transcript-api==0.6.3

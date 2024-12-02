@@ -113,7 +113,7 @@ def video_info(hashtag, latitude, longitude, radius='50km', max_results=10, star
 
                 #  low engagement  reject
                 if views < min_views or likes < min_likes or comment_count < min_comments:
-                    continue  # Skip if the engagement is below the threshold
+                    continue  
 
                 # Increment the counter for filtered videos
                 # filtered_videos += 1

@@ -2,21 +2,21 @@ import csv
 from googleapiclient.discovery import build
 from datetime import datetime
 
-# Set up the API with your key
+
 api_key = 'AIzaSyBP2RiFfqTZV-ofCOiIY-MMC68t4RcYbkc'
 youtube = build('youtube', 'v3', developerKey=api_key)
 
 def videoData(video_id):
-    """Fetch video metadata including views, likes, dislikes, and comments."""
+    
     try:
-        # Get video statistics
+        
         request = youtube.videos().list(
             part="statistics",
             id=video_id
         )
         response = request.execute()
 
-        # Extract video statistics
+        #  video statistics
         video_stats = response['items'][0]['statistics']
         views = int(video_stats.get('viewCount', 0))
         likes = int(video_stats.get('likeCount', 0))
@@ -30,7 +30,7 @@ def videoData(video_id):
         return None, None, None, None
 
 def channelData(channel_id):
-    """Fetch channel metadata including title, subscribers, total views, and video count."""
+   
     try:
         request = youtube.channels().list(
             part="snippet,statistics",
@@ -38,7 +38,7 @@ def channelData(channel_id):
         )
         response = request.execute()
 
-        # Extract channel metadata
+        #  channel metadata
         channel_info = response['items'][0]
         channel_title = channel_info['snippet']['title']
         channel_id = channel_info['id']
@@ -55,14 +55,13 @@ def channelData(channel_id):
 
 def video_info(hashtag, latitude, longitude, radius='50km', max_results=10, start_date=None, end_date=None, csv_filename="video_data.csv"):
     try:
-        # Search for videos using the hashtag and within the specified location
+        # hastag video serach in yt
         request = youtube.search().list(
             part="snippet",
             q=hashtag,  # Search for the hashtag
-            type="video",  # We want videos only
-            location=f"{latitude},{longitude}",  # Location in latitude,longitude format
-            locationRadius=radius,  # Radius to search within
-            maxResults=max_results  # Limit the number of results
+            type="video",  # videos only
+            location=f"{latitude},{longitude}",  
+            locationRadius=radius,  # Limit the number of results
         )
         response = request.execute()
 
@@ -75,7 +74,7 @@ def video_info(hashtag, latitude, longitude, radius='50km', max_results=10, star
         # total_videos = 0
         # filtered_videos = 0
 
-        # Open CSV file in write mode, creating it if it doesn't exist
+        # save to csv file
         with open(csv_filename, mode='w', newline='', encoding='utf-8') as csvfile:
             fieldnames = [
                 'Video Title', 'Description', 'Video URL', 'Published At',
@@ -109,10 +108,10 @@ def video_info(hashtag, latitude, longitude, radius='50km', max_results=10, star
                 # Get video statistics (views, likes, dislikes, comments)
                 views, likes, dislikes, comment_count = videoData(video_id)
 
-                # Get channel metadata
+                #  channel metadata
                 channel_title, channel_id, subscriber_count, total_views, video_count, channel_description = channelData(channel_id)
 
-                # Skip videos with low engagement
+                #  low engagement  reject
                 if views < min_views or likes < min_likes or comment_count < min_comments:
                     continue  # Skip if the engagement is below the threshold
 
